@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tes dulu ya...</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+</head>
+<body>
+	<div class="vue">
+		<br>
+		<div class="container">
+			<p><strong>Nama</strong></p>
+			<ol>
+				<li v-for='x in data'>{{ x }}</li>
+			</ol>
+			<p><strong>Tambah nama</strong></p>
+			<form @submit.prevent='tambahkan()'>
+			  <div class="form-group">
+			    <input type="text" v-model='nama' class="form-control" required="">
+			  </div>
+			</form>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+	<script type="text/javascript">
+		api = 'https://mzaini30.nasihosting.com/tes/nama.php'
+		new Vue({
+			el: '.vue',
+			data: {
+				data: [],
+				nama: ''
+			},
+			mounted(){
+				this.tampilkan()
+			},
+			methods: {
+				tambahkan(){
+					body = new FormData
+					body.append('nama', this.nama)
+					fetch(`${api}/tambah`, {
+						method: 'post',
+						body
+					}).then(() => {
+						this.tampilkan()
+						this.nama = ''
+					})
+				},
+				tampilkan(){
+					fetch(`${api}/tampil`).then(x => x.json()).then(data => this.data = data)
+				}
+			}
+		})
+	</script>
+</body>
+</html>
